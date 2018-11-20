@@ -1,7 +1,7 @@
-package utils.datageneration.Metadata;
+package utils.datageneration.metadata;
 
-public class Metadata {
-    public class MetaData {
+public class MetaData {
+
         private String fileName;
         private String tag;
         private String sheet;
@@ -64,4 +64,3 @@ public class Metadata {
             this.description = description;
         }
     }
-}
