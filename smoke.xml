@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="ForecastSuite" parallel="methods" thread-count="4">
+    <test name="GetWeatherForecast" preserve-order="true">
+        <classes>
+            <class name="SendWeatherForecast"/>
+            <class name="GoogleTest"/>
+        </classes>
+    </test>
+</suite>
