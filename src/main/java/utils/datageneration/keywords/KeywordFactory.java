@@ -26,8 +26,6 @@ public class KeywordFactory {
                 return new AutoPhoneNumber();
             case FORMATTED_NUMBER:
                 return new AutoPhoneNumber();
-            case RANGED_NUMBER:
-                return new AutoRangedNumber();
             default:
                 return new AutoFirstName();
         }
