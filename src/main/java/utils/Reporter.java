@@ -7,7 +7,6 @@ import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import org.testng.ITestResult;
 import org.testng.log4testng.Logger;
-import pages.BasePage;
 import ru.yandex.qatools.ashot.AShot;
 import ru.yandex.qatools.ashot.Screenshot;
 import javax.imageio.ImageIO;
@@ -128,7 +127,7 @@ public class Reporter {
             Path screenshotPath = Paths.get(screenshotFolder.toString(), fileName + ".png");
             Screenshot screenshot = null;
             screenshot = new AShot()
-                    .takeScreenshot(BasePage.getInstance().getDriver());
+                    .takeScreenshot(DriverManager.getDriver());
             ImageIO.write(screenshot.getImage(), "PNG", new File(screenshotPath.toString()));
 
             return screenshotPath.toString();

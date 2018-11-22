@@ -2,7 +2,6 @@ package utils.datageneration.keywords;
 
 public enum DataSource {
     FIRST_NAME("FIRST_NAME"),
-    MIDDLE_NAME("MIDDLE_NAME"),
     LAST_NAME("LAST_NAME"),
     CITY("CITY"),
     STATE("STATE"),

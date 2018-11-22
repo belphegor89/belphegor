@@ -27,6 +27,7 @@ public class BaseTest {
         try {
             logger.info("Creating driver for " + getClass().getName().toString() + " test");
             //BasePage.getInstance().getDriver();
+            BasePage.driver.set(DriverManager.getDriver());
         } catch (Exception e) {
             e.printStackTrace();
             Reporter.fail("Failed during driver creation");
@@ -38,9 +39,11 @@ public class BaseTest {
     @AfterMethod
     public void endTest(ITestResult testResult) {
         Reporter.stopReporting(testResult);
-        BasePage.getInstance().getDriver().quit();
-        BasePage.getInstance().closeBrowser();
-        BasePage.closeInstance();
+//        BasePage.getInstance().getDriver().quit();
+//        BasePage.getInstance().closeBrowser();
+//        BasePage.closeInstance();
+        BasePage.driver().quit();
+        DriverManager.closeDriver();
     }
 
     @AfterSuite(alwaysRun = true)

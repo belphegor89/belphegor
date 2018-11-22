@@ -3,32 +3,24 @@ package utils.datageneration.generator;
 public class Address {
     public static Address DEFAULT_ADDRESS = new Address() {
         public String getStreet() {
-            return "95A West-Division St.";
+            return "Shevchenko Str 1";
         }
 
-        public String getStateName() {
-            return "Illinois";
-        }
-
-        public String getStateAbbr() {
-            return "IL";
-        }
 
         public String getZipCode() {
-            return "60616";
+            return "46001";
         }
 
         public String getFullAddress() {
-            return "95A West-Division St. Chicago, IL, 606160";
+            return "Shevchenko Str 1, 46001";
         }
 
         public String getCity() {
-            return "Chicago";
+            return "Ternopil";
         }
     };
-    private String stateName;
+
     private String street;
-    private String stateAbbr;
     private String city;
     private String zipCode;
     private String fullAddress;
@@ -42,22 +34,6 @@ public class Address {
 
     public void setStreet(String street) {
         this.street = street;
-    }
-
-    public String getStateName() {
-        return this.stateName;
-    }
-
-    public void setStateName(String stateName) {
-        this.stateName = stateName;
-    }
-
-    public String getStateAbbr() {
-        return this.stateAbbr;
-    }
-
-    public void setStateAbbr(String stateAbbr) {
-        this.stateAbbr = stateAbbr;
     }
 
     public String getCity() {

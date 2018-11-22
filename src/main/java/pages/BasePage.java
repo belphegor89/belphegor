@@ -4,10 +4,8 @@ import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
-import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.*;
 import utils.Reporter;
-import webdriver.WebDriverThread;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by yzosin on 23-Aug-17.
  */
-public class BasePage {
+public abstract class BasePage {
 
     public static Logger logger = Logger.getLogger(BasePage.class);
     public String pageURL = "";
@@ -27,76 +25,33 @@ public class BasePage {
     static String TARGET_FOLDER = "target";
     public static final int DEFAULT_SHORT_TIMEOUT = 10;
     public static final int DEFAULT_LONG_TIMEOUT = 50;
-    public static final int STATIC_TIMEOUT = 1;
-    private WebDriver e_driver;
-    private EventFiringWebDriver driver;
+    public static final int STATIC_TIMEOUT =  1;
     public static String rootFolder = System.getProperty("user.dir");
     private static String fileUploadPath = rootFolder + File.separator + TARGET_FOLDER + File.separator + "SinoptikScreenshot.png";
 
-    //public static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
-
+    public static ThreadLocal<WebDriver> driver = new ThreadLocal<WebDriver>();
     static Reporter reporter = Reporter.Instance;
 
-    private static final ThreadLocal<BasePage> instance = new ThreadLocal<BasePage>() {
-        @Override
-        protected BasePage initialValue() {
-            return new BasePage() {
-            };
-        }
-    };
-
     public BasePage() {
-        e_driver = instantiateDriver();
-        driver = new EventFiringWebDriver(e_driver);
 
-        driver.manage().timeouts().implicitlyWait(DEFAULT_SHORT_TIMEOUT, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
     }
 
-    private WebDriver instantiateDriver() {
-        try {
-            return new WebDriverThread().getDriver();
-        } catch (Exception e) {
-            throw new WebDriverException("Could not start the Driver", e);
-        }
-    }
-
-    public static BasePage getInstance() {
-        return instance.get();
-    }
-
-    public WebDriver getDriver() {
-        return driver;
-    }
-
-    public static void closeInstance() {
-        instance.remove();
-    }
-
-    public void closeBrowser() {
-        try {
-            if (driver != null) {
-                driver.quit();
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public static WebDriver driver(){
+        return driver.get();
     }
 
     public boolean isPageLoaded() {
         boolean result = false;
-        Reporter.log("Page title is: " + driver.getTitle());
-        Reporter.log("Page URL is: " + driver.getCurrentUrl());
-        if (driver.getTitle().contains(pageTitle))
+        Reporter.log("Page title is: " + driver().getTitle());
+        Reporter.log("Page URL is: " + driver().getCurrentUrl());
+        if (driver().getTitle().contains(pageTitle))
             result = true;
         else {
             Reporter.log("Expected title: " + pageTitle);
             result = false;
         }
 
-        if (driver.getCurrentUrl().contains(pageURL))
+        if (driver().getCurrentUrl().contains(pageURL))
             result = true;
         else {
             Reporter.log("Expected URL: " + pageURL);
@@ -106,12 +61,12 @@ public class BasePage {
     }
 
     public void reloadPage() {
-        driver.navigate().refresh();
+        driver().navigate().refresh();
     }
 
     public void open(String url) {
-        Reporter.log("Opening the page: " + "\"" + url);
-        driver.get(url);
+        logger.info("Opening the page: " + "\"" + url);
+        driver().get(url);
     }
 
     public String getTitle() {
@@ -124,7 +79,7 @@ public class BasePage {
         return url + pageURL;
     }
 
-    public void setText(By element, String value) {
+    public void setText(By element, String value){
         if (value != null) {
             findElement(element).clear();
             findElement(element).sendKeys(value);
@@ -132,7 +87,7 @@ public class BasePage {
     }
 
     public boolean isTextPresent(String text) {
-        return driver.getPageSource().contains(text);
+        return driver().getPageSource().contains(text);
     }
 
     public boolean isElementPresent(WebElement element) {
@@ -156,20 +111,20 @@ public class BasePage {
         return findElement(by);
     }
 
-    public void selectFromDropdown(By element, String value) {
+    public void selectFromDropdown(By element, String value){
         Select dropdown = new Select(findElement(element));
         dropdown.selectByVisibleText(value);
     }
 
-    public void clickOnElement(By element) {
+    public  void clickOnElement(By element) {
         waitForPageToLoad();
         try {
-            (new WebDriverWait(driver, STATIC_TIMEOUT))
+            (new WebDriverWait(driver(), STATIC_TIMEOUT))
                     .until(ExpectedConditions.visibilityOfElementLocated(element));
-            driver.findElement(element).click();
+            driver().findElement(element).click();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Failure clicking on element");
+            throw new RuntimeException("Failure clicking on element" );
         }
         waitForPageToLoad();
     }
@@ -177,9 +132,9 @@ public class BasePage {
     public WebElement findElement(By element) {
         waitForPageToLoad();
         try {
-            (new WebDriverWait(driver, DEFAULT_SHORT_TIMEOUT))
+            (new WebDriverWait(driver(), DEFAULT_SHORT_TIMEOUT))
                     .until(ExpectedConditions.visibilityOfElementLocated(element));
-            return driver.findElement(element);
+            return driver().findElement(element);
         } catch (Exception e) {
             e.printStackTrace();
             e.getMessage();
@@ -191,9 +146,9 @@ public class BasePage {
     public List<WebElement> findElements(By element) {
         waitForPageToLoad();
         try {
-            (new WebDriverWait(driver, DEFAULT_SHORT_TIMEOUT))
+            (new WebDriverWait(driver(), DEFAULT_SHORT_TIMEOUT))
                     .until(ExpectedConditions.presenceOfElementLocated(element));
-            return driver.findElements(element);
+            return driver().findElements(element);
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Failure by finding elements");
@@ -202,15 +157,16 @@ public class BasePage {
 
     public void scrollToElement(WebElement element) {
         waitForPageToLoad();
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", element);
+        ((JavascriptExecutor) driver()).executeScript("arguments[0].scrollIntoView(true);",element);
 
     }
 
     /**
      * Waits for a page to load completely
+     *
      */
-    public void waitForPageToLoad() {
-        Wait<WebDriver> wait = new WebDriverWait(driver, STATIC_TIMEOUT).ignoring(WebDriverException.class);
+    public void waitForPageToLoad(){
+        Wait<WebDriver> wait = new WebDriverWait(driver(), STATIC_TIMEOUT).ignoring(WebDriverException.class);
         wait.until(new Function<WebDriver, Boolean>() {
             public Boolean apply(WebDriver driver) {
                 return String.valueOf(((JavascriptExecutor) driver).executeScript("return document.readyState"))
@@ -219,8 +175,8 @@ public class BasePage {
         });
     }
 
-    void waitForElement(By by) {
-        WebDriverWait wait = new WebDriverWait(driver, DEFAULT_SHORT_TIMEOUT);
+    void waitForElement(By by){
+        WebDriverWait wait = new WebDriverWait(driver(), DEFAULT_SHORT_TIMEOUT);
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
@@ -236,7 +192,7 @@ public class BasePage {
      * @return String webelement text with information provided in the Popup Window
      */
     public String acceptAlertMessage() {
-        Alert jsalert = driver.switchTo().alert();
+        Alert jsalert = driver().switchTo().alert();
         String alertMsg = jsalert.getText();
         jsalert.accept();
         return alertMsg;
@@ -250,7 +206,6 @@ public class BasePage {
         Random random = new Random();
         List<WebElement> allOptions = select.getOptions();
 
-        // needs to updated based on application
         if (allOptions.get(0).getText().toLowerCase().contains("none")) {
             value = 1 + random.nextInt(allOptions.size() - 1);
         } else {
@@ -261,7 +216,7 @@ public class BasePage {
         return allOptions.get(value).getText();
     }
 
-    public static void sleepFor(int timeout) {
+    public static void sleepFor(int timeout){
         try {
             Sleeper.SYSTEM_SLEEPER.sleep(new Duration(STATIC_TIMEOUT, TimeUnit.SECONDS));
         } catch (InterruptedException e) {
@@ -274,7 +229,8 @@ public class BasePage {
             try {
                 Alert alert = driver.switchTo().alert();
                 break;
-            } catch (NoAlertPresentException e) {
+            } catch (NoAlertPresentException e)
+            {
                 sleepFor(1);
                 continue;
             }
@@ -283,15 +239,15 @@ public class BasePage {
 
     public void switchToFrame(By by) {
         logger.info("Switching to frame: " + by.toString());
-        driver.switchTo().frame(findElement(by));
+        driver().switchTo().frame(findElement(by));
     }
 
-    public void switchToDefaultContent() {
+    public void switchToDefaultContent(){
         logger.info("Switching to default content");
-        driver.switchTo().defaultContent();
+        driver().switchTo().defaultContent();
     }
 
-    public static String takeScreenshot(WebDriver driver, String name) {
+    public static String takeScreenshot(WebDriver driver, String name){
         File file = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
         String filename = name + "Screenshot.png";
         try {
@@ -303,7 +259,7 @@ public class BasePage {
     }
 
     public void fileUpload(By element) {
-        WebElement webelement = driver.findElement(element);
+        WebElement webelement = driver().findElement(element);
         webelement.sendKeys(fileUploadPath);
     }
 }

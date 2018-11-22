@@ -11,13 +11,13 @@ public class AutoAddress implements AutoKeyword {
 
     public String generateData() {
         Address address = DataGenerator.getInstance().getAddress();
-        return address.getStreet() + ", " + address.getCity() + ", " + address.getStateName() + ", " + address.getZipCode();
+        return address.getStreet() + ", " + address.getCity() + ", " + ", " + address.getZipCode();
     }
 
     public String generateData(String modifier) {
         if (modifier.equals("NONE")) {
             Address address = DataGenerator.getInstance().getAddress();
-            return address.getStreet() + ", " + address.getCity() + ", " + address.getStateName() + ", " + address.getZipCode();
+            return address.getStreet() + ", " + address.getCity() + ", " + ", " + address.getZipCode();
         } else {
             return "Need more address generator...";
         }

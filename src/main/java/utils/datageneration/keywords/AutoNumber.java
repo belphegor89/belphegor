@@ -1,5 +1,7 @@
 package utils.datageneration.keywords;
 
+import utils.datageneration.generator.DataGenerator;
+
 public class AutoNumber implements AutoKeyword {
     public AutoNumber() {
     }

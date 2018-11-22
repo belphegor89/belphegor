@@ -14,7 +14,7 @@ import static pages.BasePage.logger;
 /**
  * Created by yzosin on 04-Sep-17.
  */
-public class SendMail {
+public class SendMail extends BasePage{
 
     private static SendMail instance;
     public static SendMail Instance = (instance != null) ? instance : new SendMail();
@@ -30,32 +30,31 @@ public class SendMail {
     By text = By.id("tinymce");
     By message = By.xpath(".//div[@class='sendmsg__ads-ready']");
 
-    BasePage page = BasePage.getInstance();
 
     public void sendMailWithFile() {
 
         LogManager.getLogger().info("Clicking Write Mail link");
-        page.findElement(writeMail).click();
+        findElement(writeMail).click();
         LogManager.getLogger().info("Entering recipient: " + writeTo);
-        page.isElementPresentAndDisplay(subject);
-        Actions actions = new Actions(BasePage.getInstance().getDriver());
-        WebElement element = BasePage.getInstance().getDriver().findElement(recipient);
+        isElementPresentAndDisplay(subject);
+        Actions actions = new Actions(BasePage.driver());
+        WebElement element = BasePage.driver().findElement(recipient);
         actions.moveToElement(element);
         actions.click();
         actions.sendKeys(writeTo);
         actions.build().perform();
         LogManager.getLogger().info("Entering subject");
-        page.findElement(subject).sendKeys("Weather report for " + Tools.getCurrentTime());
+        findElement(subject).sendKeys("Weather report for " + Tools.getCurrentTime());
         LogManager.getLogger().info("Adding weather report to mail");
-        page.fileUpload(file);
-        page.switchToFrame(frame);
+        fileUpload(file);
+        switchToFrame(frame);
         LogManager.getLogger().info("Adding mail body");
-        page.findElement(text).sendKeys("Today's forecast");
-        page.switchToDefaultContent();
+        findElement(text).sendKeys("Today's forecast");
+        switchToDefaultContent();
         LogManager.getLogger().info("Sending mail");
-        page.findElement(sendButton).click();
+        findElement(sendButton).click();
         try {
-            page.acceptAlertMessage();
+            acceptAlertMessage();
         } catch (NoAlertPresentException Ex) {
             LogManager.getLogger().info("No alert message found");
         }
@@ -63,7 +62,7 @@ public class SendMail {
     }
 
     public boolean validateMessageSent() {
-        String validationMessage = page.findElement(message).getText();
+        String validationMessage = findElement(message).getText();
         Assert.assertEquals(validationMessage, "Ваш лист надіслано\n" +
                         "Написати щеПовернутись у вхідні",
                 "Success message doesn't match the expected one");

@@ -2,14 +2,13 @@ package pages;
 
 import utils.LogManager;
 
-public class Google  {
+public class Google  extends BasePage {
 
     private static Google instance;
     public static Google Instance =(instance!=null) ? instance: new Google();
 
     public void start(){
-        BasePage page = BasePage.getInstance();
-        page.open("https://www.google.com/");
+        open("https://www.google.com/");
         LogManager.getLogger().info("Successfully navigated to web page!!!");
     }
 }

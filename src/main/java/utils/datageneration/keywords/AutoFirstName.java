@@ -1,5 +1,7 @@
 package utils.datageneration.keywords;
 
+import utils.datageneration.generator.DataGenerator;
+
 public class AutoFirstName implements AutoKeyword {
     public AutoFirstName() {
     }
@@ -9,7 +11,7 @@ public class AutoFirstName implements AutoKeyword {
     }
 
     public String generateData() {
-        return (String)DataGenerator.getInstance().getFirstName().getLeft();
+        return (String) DataGenerator.getInstance().getFirstName().getLeft();
     }
 
     public String generateData(String modifier) {
@@ -35,9 +37,9 @@ public class AutoFirstName implements AutoKeyword {
             case 0:
                 return (String)DataGenerator.getInstance().getFirstName().getLeft();
             case 1:
-                return DataGenerator.getInstance().getGenderFirstName(Gender.MALE);
+                return DataGenerator.getInstance().getGenderFirstName(DataGenerator.Gender.MALE);
             case 2:
-                return DataGenerator.getInstance().getGenderFirstName(Gender.FEMALE);
+                return DataGenerator.getInstance().getGenderFirstName(DataGenerator.Gender.FEMALE);
             default:
                 return DataGenerator.getInstance().getName();
         }
