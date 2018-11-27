@@ -42,19 +42,19 @@ public abstract class BasePage {
 
     public boolean isPageLoaded() {
         boolean result = false;
-        Reporter.log("Page title is: " + driver().getTitle());
-        Reporter.log("Page URL is: " + driver().getCurrentUrl());
+        logger.info("Page title is: " + driver().getTitle());
+        logger.info("Page URL is: " + driver().getCurrentUrl());
         if (driver().getTitle().contains(pageTitle))
             result = true;
         else {
-            Reporter.log("Expected title: " + pageTitle);
+            logger.info("Expected title: " + pageTitle);
             result = false;
         }
 
         if (driver().getCurrentUrl().contains(pageURL))
             result = true;
         else {
-            Reporter.log("Expected URL: " + pageURL);
+            logger.info("Expected URL: " + pageURL);
             result = false;
         }
         return result;
@@ -65,7 +65,7 @@ public abstract class BasePage {
     }
 
     public void open(String url) {
-        logger.info("Opening the page: " + "\"" + url);
+        Reporter.log("Opening the page: " + "\"" + url);
         driver().get(url);
     }
 
@@ -75,7 +75,7 @@ public abstract class BasePage {
     }
 
     public String getURL(String url) {
-        Reporter.log("The requested URL is: " + url + pageURL);
+        logger.info("The requested URL is: " + url + pageURL);
         return url + pageURL;
     }
 
@@ -206,6 +206,7 @@ public abstract class BasePage {
         Random random = new Random();
         List<WebElement> allOptions = select.getOptions();
 
+        //should be changed to specific application
         if (allOptions.get(0).getText().toLowerCase().contains("none")) {
             value = 1 + random.nextInt(allOptions.size() - 1);
         } else {

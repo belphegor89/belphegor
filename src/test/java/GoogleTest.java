@@ -1,9 +1,9 @@
 import org.testng.annotations.Test;
 import pages.Google;
-import utils.BaseTest;
+import utils.BaseUITest;
 import utils.Reporter;
 
-public class GoogleTest extends BaseTest {
+public class GoogleTest extends BaseUITest {
 
 
     @Test

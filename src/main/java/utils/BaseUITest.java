@@ -11,9 +11,9 @@ import pages.BasePage;
 /**
  * Created by yzosin on 20-Sep-17.
  */
-public class BaseTest {
+public class BaseUITest {
 
-    public static Logger logger = Logger.getLogger(BaseTest.class);
+    public static Logger logger = Logger.getLogger(BaseUITest.class);
 
     Reporter reporter;
 
@@ -26,7 +26,6 @@ public class BaseTest {
         Reporter.startTest(getClass().getName().toString());
         try {
             logger.info("Creating driver for " + getClass().getName().toString() + " test");
-            //BasePage.getInstance().getDriver();
             BasePage.driver.set(DriverManager.getDriver());
         } catch (Exception e) {
             e.printStackTrace();
