@@ -9,14 +9,11 @@ import java.util.Properties;
 
 public class PropertiesReader {
 
-    static String PROPERTIES = "src/main/resources/project.properties";
-
     public static String getConfigProperty(String fieldName) {
-        String fileLocation = PROPERTIES;
         String result = null;
 
         try {
-            File file = new File(fileLocation);
+            File file = new File(PreExecutionFiles.RESOURCES_FOLDER + "/project.properties");
             FileInputStream fileInput = new FileInputStream(file);
             Properties properties = new Properties();
             properties.load(fileInput);
@@ -43,5 +40,22 @@ public class PropertiesReader {
             e.printStackTrace();
         }
         return (model.getVersion());
+    }
+
+    /**
+     * <p>It returns the property value specified in either environment variable or configuration.properties
+     * It gives priority to the property specified in Java environment variable For e.g. -Ddriver_id=FIREFOX
+     * @param key used to search for property
+     * @return </p>
+     */
+    public static String determineEffectivePropertyValue(String key) {
+
+        PropertiesReader propertiesReader = new PropertiesReader();
+
+        if (null != System.getProperty(key)) {
+            return System.getProperty(key);
+        } else {
+            return propertiesReader.getConfigProperty(key);
+        }
     }
 }
