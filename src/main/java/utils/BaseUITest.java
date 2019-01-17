@@ -17,15 +17,13 @@ public class BaseUITest {
 
     Reporter reporter;
 
-
     @BeforeMethod
     public void before() {
 
         reporter = Reporter.Instance;
-
-        Reporter.startTest(getClass().getName().toString());
+        Reporter.startTest(getClass().getName());
         try {
-            logger.info("Creating driver for " + getClass().getName().toString() + " test");
+            logger.info("Creating driver for " + getClass().getName() + " test");
             BasePage.driver.set(DriverManager.getDriver());
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,9 +36,6 @@ public class BaseUITest {
     @AfterMethod
     public void endTest(ITestResult testResult) {
         Reporter.stopReporting(testResult);
-//        BasePage.getInstance().getDriver().quit();
-//        BasePage.getInstance().closeBrowser();
-//        BasePage.closeInstance();
         BasePage.driver().quit();
         DriverManager.closeDriver();
     }
