@@ -19,8 +19,6 @@ public class SendMail extends BasePage{
     private static SendMail instance;
     public static SendMail Instance = (instance != null) ? instance : new SendMail();
 
-    String writeTo = PropertiesReader.getConfigProperty("recipient");
-
     By writeMail = By.xpath(".//*[@id='content']//button");
     By recipient = By.xpath(".//div[@class='sendmsg__form-label']/div[4]");
     By subject = By.xpath(".//input[@name='subject']");
@@ -31,7 +29,7 @@ public class SendMail extends BasePage{
     By message = By.xpath(".//div[@class='sendmsg__ads-ready']");
 
 
-    public void sendMailWithFile() {
+    public void sendMailWithFile(String writeTo) {
 
         LogManager.getLogger().info("Clicking Write Mail link");
         findElement(writeMail).click();

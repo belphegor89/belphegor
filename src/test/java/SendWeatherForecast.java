@@ -17,25 +17,36 @@ import java.util.List;
  */
 public class SendWeatherForecast extends BaseUITest {
 
+    String URL;
+    String city;
+    String URL2;
+    String username;
+    String password;
+    String recipient;
 
     @Test(dataProvider = "testData", testName = "")
     public void executeWeatherForecast(List data) {
 
-        String URL = data.get(0).toString();
-        String city = data.get(1).toString();
+        URL = data.get(0).toString();
+        city = data.get(1).toString();
+        URL2 = data.get(2).toString();
+        username = data.get(3).toString();
+        password = data.get(4).toString();
+        recipient = data.get(5).toString();
+
         ForecastPage forecast = ForecastPage.Instance;
         LoginPage loginPage = LoginPage.Instance;
         SendMail sendMail = SendMail.Instance;
         Reporter.log("Starting test for searching weather forecast");
         forecast.searchCity(URL, city);
-        Reporter.log("A city: " + PropertiesReader.getConfigProperty("searchCity") + " entered into search field");
+        Reporter.log("A city: " + city + " entered into search field");
         forecast.takeScreenshotForecast();
         Reporter.log("Screenshot with forecast taken");
         Reporter.log("Starting next part for sending forecast via email");
         Reporter.log("Trying to log in to " + PropertiesReader.getConfigProperty("URL2"));
-        loginPage.login();
+        loginPage.login(URL2, username, password);
         Reporter.log("User is logged in. Sending mail.");
-        sendMail.sendMailWithFile();
+        sendMail.sendMailWithFile(recipient);
         Assert.assertTrue(sendMail.validateMessageSent());
     }
 

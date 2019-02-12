@@ -65,7 +65,7 @@ public abstract class BasePage {
     }
 
     public void open(String url) {
-        Reporter.log("Opening the page: " + "\"" + url);
+        Reporter.log("Opening the page: " + url);
         driver().get(url);
     }
 

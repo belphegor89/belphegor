@@ -18,13 +18,13 @@ public class LoginPage extends BasePage {
     By writeMail = By.xpath(".//*[@id='content']//button");
     //BasePage page = BasePage.getInstance();
 
-    public void login() {
+    public void login(String URL, String userName, String userPassword) {
 
-        open(PropertiesReader.getConfigProperty("URL2"));
+        open(URL);
         LogManager.getLogger().info("Entering username");
-        findElement(username).sendKeys(PropertiesReader.getConfigProperty("username"));
+        findElement(username).sendKeys(userName);
         LogManager.getLogger().info("Entering password");
-        findElement(password).sendKeys(PropertiesReader.getConfigProperty("password"));
+        findElement(password).sendKeys(userPassword);
         LogManager.getLogger().info("Clicking login");
         findElement(loginbtn).click();
         validateLogin();

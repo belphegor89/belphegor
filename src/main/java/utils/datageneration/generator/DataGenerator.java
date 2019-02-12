@@ -60,7 +60,7 @@ public class DataGenerator {
     private static PeriodFormatter yearMonthDayFormatter = (new PeriodFormatterBuilder()).appendYears().appendSuffix(" year", " years").appendSeparator(", ").appendMonths().appendSuffix(" month", " months").appendSeparator(" and ").appendDays().appendSuffix(" day", " days").toFormatter();
     private static final LogbackLock lock = new LogbackLock();
     private static final Charset DEFAULT_CHARSET;
-    private static final String DEFAULT_STRING_FORMAT = "MM/dd/yyyy";
+    private static final String DEFAULT_STRING_FORMAT = "dd/MM/yyyy";
     private static DataGenerator instance;
     private static final Resource addressesResource;
     private static final Resource streetsResource;
@@ -105,7 +105,7 @@ public class DataGenerator {
             LogbackLock var0 = lock;
             synchronized(lock) {
                 if (instance == null) {
-                    instance = new DataGenerator((Long)null);
+                    instance = new DataGenerator(null);
                 }
             }
         }
@@ -153,11 +153,11 @@ public class DataGenerator {
         try {
             List males;
             if (gender.equals(DataGenerator.Gender.FEMALE)) {
-                males = (List)this.getLoadingCache().get(Integer.valueOf(1));
-                return (String)String.class.cast(males.get(this.random.nextInt(males.size())));
+                males = this.getLoadingCache().get(Integer.valueOf(1));
+                return (String) males.get(this.random.nextInt(males.size()));
             } else {
-                males = (List)this.getLoadingCache().get(Integer.valueOf(2));
-                return (String)String.class.cast(males.get(this.random.nextInt(males.size())));
+                males = this.getLoadingCache().get(Integer.valueOf(2));
+                return (String) males.get(this.random.nextInt(males.size()));
             }
         } catch (ExecutionException var3) {
             var3.printStackTrace();
@@ -183,8 +183,8 @@ public class DataGenerator {
 
     public String getLastName() {
         try {
-            List surnames = (List)this.getLoadingCache().get(Integer.valueOf(3));
-            return (String)String.class.cast(surnames.get(this.random.nextInt(surnames.size())));
+            List surnames = this.getLoadingCache().get(Integer.valueOf(3));
+            return (String) surnames.get(this.random.nextInt(surnames.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return "";
@@ -201,9 +201,9 @@ public class DataGenerator {
 
     public Address getAddress() {
         try {
-            List addresses = (List)this.getLoadingCache().get(Integer.valueOf(6));
+            List addresses = this.getLoadingCache().get(Integer.valueOf(6));
             Collections.shuffle(addresses);
-            return (Address)Address.class.cast(addresses.get(this.random.nextInt(addresses.size())));
+            return (Address) addresses.get(this.random.nextInt(addresses.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return Address.DEFAULT_ADDRESS;
@@ -217,7 +217,7 @@ public class DataGenerator {
             Supplier<Address> su = () -> {
                 return Address.DEFAULT_ADDRESS;
             };
-            return (Address)addresses.stream().filter(predicate).findFirst().orElseGet(() -> {
+            return addresses.stream().filter(predicate).findFirst().orElseGet(() -> {
                 return Address.DEFAULT_ADDRESS;
             });
         } catch (ExecutionException var4) {
@@ -228,7 +228,7 @@ public class DataGenerator {
 
     public String getStreet() {
         try {
-            List streets = (List)this.getLoadingCache().get(Integer.valueOf(7));
+            List streets = this.getLoadingCache().get(Integer.valueOf(7));
             Collections.shuffle(streets);
             return (String)streets.get(this.random.nextInt(streets.size()));
         } catch (ExecutionException var2) {
@@ -239,8 +239,8 @@ public class DataGenerator {
 
     public String getEmailAddress() {
         try {
-            List emails = (List)this.getLoadingCache().get(Integer.valueOf(4));
-            return (String)String.class.cast(emails.get(this.random.nextInt(emails.size())));
+            List emails = this.getLoadingCache().get(Integer.valueOf(4));
+            return (String) emails.get(this.random.nextInt(emails.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return "ab.cd@example.com";
@@ -258,8 +258,8 @@ public class DataGenerator {
 
     public String getTelephoneNumber() {
         try {
-            List emails = (List)this.getLoadingCache().get(Integer.valueOf(5));
-            return (String)String.class.cast(emails.get(this.random.nextInt(emails.size())));
+            List emails = this.getLoadingCache().get(Integer.valueOf(5));
+            return (String) emails.get(this.random.nextInt(emails.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return "(123) 935-1340";
@@ -301,7 +301,7 @@ public class DataGenerator {
     }
 
     public int randomInt() {
-        return this.randomBetween((int)0, (int)2147483647);
+        return this.randomBetween(0, 2147483647);
     }
 
     public byte[] randomBytes(int count) {
@@ -327,7 +327,7 @@ public class DataGenerator {
     }
 
     public <T> T randomElement(List<T> elements) {
-        return elements.get(this.randomBetween((int)0, (int)(elements.size() - 1)));
+        return elements.get(this.randomBetween(0, (elements.size() - 1)));
     }
 
     public <T> T randomElement(T... elements) {
@@ -335,7 +335,7 @@ public class DataGenerator {
     }
 
     public <T extends Enum<?>> T randomElement(Class<T> enumType) {
-        return (T) ((Enum[])enumType.getEnumConstants())[this.randomBetween((int)0, (int)(((Enum[])enumType.getEnumConstants()).length - 1))];
+        return (T) enumType.getEnumConstants()[this.randomBetween(0, (enumType.getEnumConstants().length - 1))];
     }
 
     public <T> List<T> randomElements(List<T> elements, int count) {
@@ -377,8 +377,8 @@ public class DataGenerator {
 
     public String getQuestion() {
         try {
-            List questions = (List)this.getLoadingCache().get(Integer.valueOf(9));
-            return (String)String.class.cast(questions.get(this.random.nextInt(questions.size())));
+            List questions = this.getLoadingCache().get(Integer.valueOf(9));
+            return (String) questions.get(this.random.nextInt(questions.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return "Do you have pets?";
@@ -404,7 +404,7 @@ public class DataGenerator {
 
     private String getWords(int count, boolean title) {
         try {
-            List words = (List)this.getLoadingCache().get(Integer.valueOf(4));
+            List words = this.getLoadingCache().get(Integer.valueOf(4));
             StringBuilder sb = new StringBuilder();
             int size = words.size();
 
@@ -415,7 +415,6 @@ public class DataGenerator {
                 }
 
                 sb.append(word);
-                sb.append("");
             }
 
             return sb.toString().trim();
@@ -652,7 +651,7 @@ public class DataGenerator {
     public String getUrl() {
         StringBuilder sb = new StringBuilder();
         int hostId = this.random.nextInt(URL_HOSTS.size());
-        String host = String.format((String)URL_HOSTS.get(hostId), this.getWords(1));
+        String host = String.format(URL_HOSTS.get(hostId), this.getWords(1));
         sb.append(host);
         return sb.toString();
     }
@@ -663,8 +662,8 @@ public class DataGenerator {
 
     public CreditCard creditCardNumber() {
         try {
-            List creditCards = (List)this.getLoadingCache().get(Integer.valueOf(10));
-            return (CreditCard)CreditCard.class.cast(creditCards.get(this.random.nextInt(creditCards.size())));
+            List creditCards = this.getLoadingCache().get(Integer.valueOf(10));
+            return (CreditCard) creditCards.get(this.random.nextInt(creditCards.size()));
         } catch (ExecutionException var2) {
             var2.printStackTrace();
             return CreditCard.DEFAULT_CREDIT_CARD;
@@ -693,35 +692,35 @@ public class DataGenerator {
             switch(id) {
                 case 1:
                     input = femaleNamesResource.getInputStream();
-                    return this.getList(1, (BufferedReader)bReader, input);
+                    return this.getList(1, bReader, input);
                 case 2:
                     input = maleNamesResource.getInputStream();
-                    return this.getList(2, (BufferedReader)bReader, input);
+                    return this.getList(2, bReader, input);
                 case 3:
                     input = surNamesResource.getInputStream();
-                    return this.getList(7, (BufferedReader)bReader, input);
+                    return this.getList(7, bReader, input);
                 case 4:
                     input = emailsResource.getInputStream();
-                    return this.getList(4, (BufferedReader)bReader, input);
+                    return this.getList(4, bReader, input);
                 case 5:
                     input = phoneNumberResource.getInputStream();
-                    return this.getList(5, (BufferedReader)bReader, input);
+                    return this.getList(5, bReader, input);
                 case 6:
                 case 10:
                 default:
                     break;
                 case 7:
                     input = streetsResource.getInputStream();
-                    return this.getList(7, (BufferedReader)bReader, input);
+                    return this.getList(7, bReader, input);
                 case 8:
                     input = wordsResource.getInputStream();
-                    return this.getList(8, (BufferedReader)bReader, input);
+                    return this.getList(8, bReader, input);
                 case 9:
                     input = questionsResource.getInputStream();
-                    return this.getList(9, (BufferedReader)bReader, input);
+                    return this.getList(9, bReader, input);
                 case 11:
                     input = macAddressResource.getInputStream();
-                    return this.getList(11, (BufferedReader)bReader, input);
+                    return this.getList(11, bReader, input);
             }
         } catch (Exception var6) {
             var6.printStackTrace();
@@ -748,7 +747,6 @@ public class DataGenerator {
                     bReader.close();
                 }
             } catch (IOException var12) {
-                ;
             }
 
         }
@@ -782,11 +780,11 @@ public class DataGenerator {
         charset = DEFAULT_CHARSET;
     }
 
-    public static enum Gender {
+    public enum Gender {
         MALE,
         FEMALE;
 
-        private Gender() {
+        Gender() {
         }
     }
 }
