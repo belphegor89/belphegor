@@ -24,7 +24,8 @@ public class SendWeatherForecast extends BaseUITest {
     String password;
     String recipient;
 
-    @Test(dataProvider = "testData", testName = "")
+    //@Test(dataProvider = "smoke", dataProviderClass = DataProviders.class, testName = "SendWeatherForecast")
+    @Test(dataProvider = "testData")
     public void executeWeatherForecast(List data) {
 
         URL = data.get(0).toString();
@@ -55,14 +56,6 @@ public class SendWeatherForecast extends BaseUITest {
 
         PreExecutionFiles preExecutionFiles = new PreExecutionFiles();
         preExecutionFiles.initPahs();
-        ExcelReader excelReader = new ExcelReader();
-        String sheet = "smoke";
-        try {
-            excelReader.setExcel(PreExecutionFiles.TEST_FILES_FOLDER, PreExecutionFiles.TEST_EXECUTION_FILE_NAME, sheet);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        List rowsNo = excelReader.getRowContains(getClass().getName(), 0);
-        return excelReader.getTableArray(rowsNo);
+        return preExecutionFiles.getExcel(getClass().getName());
     }
 }

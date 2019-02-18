@@ -1,5 +1,8 @@
 package utils;
 
+import java.io.IOException;
+import java.util.List;
+
 public class PreExecutionFiles {
 
     public static String TEST_FILES_FOLDER = null;
@@ -22,6 +25,18 @@ public class PreExecutionFiles {
             TEST_EXECUTION_FILE_NAME = System.getProperty("testFile");
         }
 
+    }
+
+    public Object[][] getExcel(String testCase) {
+        String sheet = System.getProperty("testSheet");
+        ExcelReader excelReader = new ExcelReader();
+        try {
+            excelReader.setExcel(TEST_FILES_FOLDER, TEST_EXECUTION_FILE_NAME, sheet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        List rowsNo = excelReader.getRowContains(testCase, 0);
+        return excelReader.getTableArray(rowsNo);
     }
 
 }
