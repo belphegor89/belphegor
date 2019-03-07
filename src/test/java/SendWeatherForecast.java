@@ -9,8 +9,7 @@ import utils.*;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yzosin on 20-Sep-17.
@@ -23,17 +22,29 @@ public class SendWeatherForecast extends BaseUITest {
     String username;
     String password;
     String recipient;
+    public ArrayList<String> inputParameters = new ArrayList();
 
-    //@Test(dataProvider = "smoke", dataProviderClass = DataProviders.class, testName = "SendWeatherForecast")
+
     @Test(dataProvider = "testData")
     public void executeWeatherForecast(List data) {
 
-        URL = data.get(0).toString();
-        city = data.get(1).toString();
-        URL2 = data.get(2).toString();
-        username = data.get(3).toString();
-        password = data.get(4).toString();
-        recipient = data.get(5).toString();
+
+        //checkTestParameters(data);
+
+        String value = null;
+        String inputParameter;
+        for (int i =0; i<data.size(); i++) {
+            value = data.get(i).toString();
+            inputParameter = ParametersController.checkIfSpecialParameter(value);
+            inputParameters.add(i, inputParameter);
+        }
+
+        URL = inputParameters.get(0);
+        city = inputParameters.get(1);
+        URL2 = inputParameters.get(2);
+        username = inputParameters.get(3);
+        password = inputParameters.get(4);
+        recipient = inputParameters.get(5);
 
         ForecastPage forecast = ForecastPage.Instance;
         LoginPage loginPage = LoginPage.Instance;

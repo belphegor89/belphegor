@@ -1,12 +1,15 @@
 package utils;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class PreExecutionFiles {
 
     public static String TEST_FILES_FOLDER = null;
     public static String RESOURCES_FOLDER = "src/main/resources";
+    public static String METADATA_AND_KEYWORDS_FILES_FOLDER_PATH = "src/main/resources/keywords.metadata";
     public static String TEST_EXECUTION_FILE_NAME = "Test.xlsx";
 
     PropertiesReader propertiesReader;
