@@ -10,24 +10,24 @@ import utils.PropertiesReader;
 public class ForecastPage extends BasePage {
 
     private static ForecastPage instance;
-    public static ForecastPage Instance =(instance!=null) ? instance: new ForecastPage();
+    public static ForecastPage Instance = (instance != null) ? instance : new ForecastPage();
 
     By searchField = By.id("search_city");
     By searchButton = By.xpath(".//*[@id='form-search']//input[2]");
 
     //BasePage page = BasePage.getInstance();
 
-    public void searchCity() {
-        open(PropertiesReader.getConfigProperty("URL"));
+    public void searchCity(String URL, String searchCity) {
+        open(URL);
         waitForPageToLoad();
-        LogManager.getLogger().info("Entering " + PropertiesReader.getConfigProperty("searchCity") + " into search field");
-        findElement(searchField).sendKeys(PropertiesReader.getConfigProperty("searchCity"));
+        LogManager.getLogger().info("Entering " + searchCity + " into search field");
+        findElement(searchField).sendKeys(searchCity);
         LogManager.getLogger().info("Clicking search icon");
         findElement(searchButton).click();
     }
 
     public void takeScreenshotForecast() {
         LogManager.getLogger().info("Taking screenshot for page");
-        takeScreenshot(driver(),"Sinoptik");
+        takeScreenshot(driver(), "Sinoptik");
     }
 }

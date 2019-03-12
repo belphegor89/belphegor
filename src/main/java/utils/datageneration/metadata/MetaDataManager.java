@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class MetaDataManger {
+public class MetaDataManager {
     private final Path filePath;
     private String metaPrefix;
     private List<MetaData> metaDictionary;
 
-    public MetaDataManger(Path filePath, String prefix) {
+    public MetaDataManager(Path filePath, String prefix) {
         this.filePath = filePath;
         this.metaPrefix = prefix;
         this.metaDictionary = new ArrayList();
@@ -106,7 +106,7 @@ public class MetaDataManger {
                         metaData.setSheet(dataSheet.getSheetName());
 
                         while(cellIterator.hasNext()) {
-                            Cell cell = (Cell)cellIterator.next();
+                            Cell cell = cellIterator.next();
                             switch(cell.getCellType()) {
                                 case 0:
                                     double numVal = cell.getNumericCellValue();

@@ -90,7 +90,7 @@ public class DriverManager {
 
     public static String getCurrentBrowserName() {
         if (BROWSER_TYPE == null)
-            if (PropertiesReader.getConfigProperty("driver").equalsIgnoreCase("firefox")) {
+            if (PropertiesReader.determineEffectivePropertyValue("driver").equalsIgnoreCase("firefox")) {
                 BROWSER_TYPE = BrowserType.FIREFOX;
             } else {
                 BROWSER_TYPE = BrowserType.CHROME;
